@@ -3,6 +3,7 @@ import {TethrPanasonic} from './TethrPanasonic'
 import {TethrPTPUSB} from './TethrPTPUSB'
 import {TethrRicohTheta} from './TethrRicohTheta'
 import {TethrSigma} from './TethrSigma'
+import {TethrCanon} from './TethrCanon'
 
 /**
  * Return the vendor-specific PTPUSB subclass for the given device info.
@@ -12,16 +13,24 @@ import {TethrSigma} from './TethrSigma'
 export function getVendorSpecificPTPUSBClass(
 	info: DeviceInfo
 ): typeof TethrPTPUSB | undefined {
-	switch (info.vendorExtensionID) {
-		case 0x00000006: // Microsoft / Sigma / Ricoh
-			if (info.vendorExtensionDesc === 'SIGMA') {
-				return TethrSigma
-			} else if (info.model.match(/theta/i)) {
-				return TethrRicohTheta
-			}
-			break
-		case 0x0000001c: // Panasnoic
-			return TethrPanasonic
-			break
-	}
+        switch (info.vendorExtensionID) {
+                case 0x00000006: // Microsoft / Sigma / Ricoh
+                        if (info.vendorExtensionDesc === 'SIGMA') {
+                                return TethrSigma
+                        } else if (info.model.match(/theta/i)) {
+                                return TethrRicohTheta
+                        }
+                        break
+                case 0x0000001c: // Panasnoic
+                        return TethrPanasonic
+                        break
+        }
+
+        if (
+                info.vendorExtensionDesc.match(/canon/i) ||
+                info.manufacturer.match(/canon/i) ||
+                info.model.match(/eos\s*1500d/i)
+        ) {
+                return TethrCanon
+        }
 }
