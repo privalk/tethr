@@ -47,3 +47,4 @@ export async function initTethrUSBPTP(
 }
 
 export {TethrPTPUSB}
+export {TethrCanon} from './TethrCanon'
